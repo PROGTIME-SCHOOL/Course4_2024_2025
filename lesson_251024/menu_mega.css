@@ -1,0 +1,51 @@
+.menu-mega {
+    background-color: #3a88fe;
+    padding: 15px;
+}
+
+.menu-mega-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.menu-mega-item {
+    
+}
+
+.menu-mega-item a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+.menu-mega-item a:hover {
+    background-color: black;
+    border-radius: 5px;
+}
+
+.dropdown {
+
+}
+
+.dropdown-menu-mega {
+    list-style: none;
+    padding: 0;
+
+    background-color: darkslategray;
+    border-radius: 5px;
+    display: none; /* Скрыли меню */
+    position: absolute;
+    margin: 10px 0 0 0;
+  
+}
+
+.dropdown-menu-mega li a {
+    display: block;
+    padding: 10px;
+    width: 150px;
+}
+
+.menu-mega-item:hover .dropdown-menu-mega {
+    display: block;
+}
