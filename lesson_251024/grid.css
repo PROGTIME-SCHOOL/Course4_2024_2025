@@ -1,0 +1,24 @@
+div {
+    border: 1px solid black;
+}
+
+.grid {
+    border: 1px solid red;
+    display: grid;
+    grid-template-columns: 100px 1fr 150px;
+}
+
+.header {
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
+.form {
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
+.footer {
+    grid-column-start: 1;
+    grid-column-end: 4;
+}

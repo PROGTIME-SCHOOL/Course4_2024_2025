@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #e0f7fa;
+    padding: 20px;
+}
+
+div {
+    border: 1px solid black;
+}
+
+.grid-container {
+    border: 1px solid red;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 300px auto auto 50px;
+
+    /* отступы от элементов грида 20px */
+    gap: 20px;
+
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu {
+    background-color: #004d99;
+    color: white;
+    padding: 10px;
+}
+
+.menu ul {
+    display: flex;
+    list-style: none;
+    justify-content: space-around;
+}
+
+.menu li {
+    
+}
+
+.menu a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+.info {
+    background-color: #007acc;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: center;  /* x */
+    align-items: center;   /* y */
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info-content img {
+    max-width: 150px;
+    margin-bottom: -10px;
+}
+
+.products {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr;
+
+    gap: 20px;
+}
+
+.product {
+    display: flex;
+    flex-direction: column;
+
+    background-color: white;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid black;
+    padding: 20px;
+}
+
+.product img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.product h2 {
+    margin-bottom: 10px;
+}
+
+p {
+    margin: 10px 0;
+}
+
+.price {
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.buy-button {
+    background-color: #004d99;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+.product:hover {
+    transform: scale(1.05);
+}
+
+.buy-button:hover {
+    transform: scale(1.05);
+}
+
+.contacts {
+    background-color: #f2f9fc;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+
+}
+
+.bottom {
+    background-color: #004d99;
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
