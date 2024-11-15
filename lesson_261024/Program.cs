@@ -10,6 +10,9 @@ builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddHttpClient<ICurrencyService, CurrencyService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 
+builder.Services.AddSingleton<ITestService, TestService>();
+builder.Services.AddSingleton<AnotherTestService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline

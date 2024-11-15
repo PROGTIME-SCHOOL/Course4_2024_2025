@@ -28,4 +28,11 @@ public class CookieController : Controller
 
         return View();
     }
+
+    public IActionResult Settings()
+    {
+        ViewBag.Theme = "light";
+
+        return View();
+    }
 }
