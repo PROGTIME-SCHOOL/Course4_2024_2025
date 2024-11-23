@@ -95,3 +95,40 @@ body {
     padding: 1rem;
     margin-top: auto;
 }
+
+/* Downloads Page */
+
+.downloads {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-top: 1rem;
+    text-align: center;
+}
+
+.download-item {
+    background: rgb(5, 128, 223);
+    border-radius: 8px;
+    padding: 1rem;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.download-item h4 {
+    font-size: 1.2rem;
+}
+
+.download-link {
+    color: #0056b3;
+    text-decoration: none;
+    background-color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+    display: block;
+    margin-top: 1rem;
+}
+
+.download-link:hover {
+    color: #007BFF;
+}
