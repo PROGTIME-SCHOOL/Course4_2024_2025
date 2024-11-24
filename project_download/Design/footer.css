@@ -1,0 +1,27 @@
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+div {
+    border: 5px solid black;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.menu {
+    background-color: red;
+}
+
+.content {
+    background-color: blue;
+    flex: 1;
+}
+
+.footer {
+    background-color: green;
+}

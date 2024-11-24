@@ -1,6 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using BCrypt.Net;
+using project_download.Data;
+using project_download.Models;
 
 namespace project_download.Controllers;
 
@@ -32,7 +35,7 @@ public class FileUploadController : Controller
         return View(files);
     }
 
-    public IActionResult Upload(IFormFile file)
+    public IActionResult Upload(IFormFile file, string password)
     {
         // альтернативный вариант загрузки через HttpContext
         // var files = HttpContext.Request.Form.Files.FirstOrDefault();
@@ -57,19 +60,52 @@ public class FileUploadController : Controller
             file.CopyTo(stream);
         }
 
-        return Content($"Файл <{file.FileName}> загружен!");
+        // работа с паролем
+        string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+
+        // сохранение в репозиторий
+        // FileRepository.Files.Add(new FileData() {
+        //     FileName = file.FileName,
+        //     PasswordHash = passwordHash
+        // });
+
+        FileDataManager.AddFile(new FileData() {
+            FileName = file.FileName,
+            PasswordHash = passwordHash
+        });
+
+        return Content($"Файл <{file.FileName}> загружен! {passwordHash}");
     }
 
+    [HttpGet]
     public IActionResult DownloadFile(string fileName)
     {
-        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
+        // View(ViewName, Model)
+        return View("DownloadFile", fileName);
+    }
 
-        var filePath = Path.Combine(uploadsFolder, fileName);
+    [HttpPost]
+    public IActionResult DownloadFile(string fileName, string password)
+    {
+        // достаем fileData по имени файла
+        //var fileData = FileRepository.Files.FirstOrDefault(x => x.FileName == fileName);
 
-        if (!System.IO.File.Exists(filePath))
+        var fileData = FileDataManager.GetFile(fileName);
+
+        if (fileData == null)   // не нашли файл
         {
             return Content("Файл не найден!");
         }
+
+        // check password
+        if (BCrypt.Net.BCrypt.Verify(password, fileData.PasswordHash) == false)
+        {
+            return Content("Неверный пароль!");
+        }
+
+        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
+
+        var filePath = Path.Combine(uploadsFolder, fileName);
 
         byte[] bytes = System.IO.File.ReadAllBytes(filePath);
         return File(bytes, "application/octet-stream", fileName);

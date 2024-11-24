@@ -20,7 +20,7 @@
                         <p>Size: @file.Size</p>
                         
 
-                        <form action="/FileUpload/DownloadFile">
+                        <form action="/FileUpload/DownloadFile" method="get">
                             <input type="text" name="fileName" value="@file.Name" hidden>
                             <input type="submit" id="button-submit" hidden>
                             <label for="button-submit"><a class="download-link">Download</a></label>
