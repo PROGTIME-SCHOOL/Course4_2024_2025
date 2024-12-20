@@ -1,0 +1,20 @@
+﻿@model TodoApp.Models.ViewModels.LoginViewModel
+
+<h1>Login</h1>
+
+<form asp-action=Login method="post">
+    <div>
+        <input asp-for=Email placeholder="Email"/>
+    </div>
+
+    <div>
+        <input asp-for=Password placeholder="Password"/>
+    </div>
+    
+    <div>
+        <input asp-for=RememberMe/>
+        <label>Remember Me</label>
+    </div>
+    
+    <input type="submit" value="Войти"/>
+</form>

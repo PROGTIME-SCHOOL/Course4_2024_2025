@@ -1,0 +1,18 @@
+﻿@model TodoApp.Models.ViewModels.RegisterViewModel
+
+<h1>Register</h1>
+
+@if(!ViewData.ModelState.IsValid)
+{
+    foreach (var error in ViewData.ModelState.Values.SelectMany(x => x.Errors))
+    {
+        <p>@error.ErrorMessage</p>
+    }
+}
+
+<form asp-action="Register" method="post">
+    <input asp-for="Email"/>
+    <input asp-for="Password"/>
+    <input asp-for="ConfirmPassword"/>
+    <input type="submit" value="Register"/>
+</form>
