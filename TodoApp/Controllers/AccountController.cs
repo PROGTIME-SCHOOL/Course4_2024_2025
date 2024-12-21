@@ -87,8 +87,10 @@ namespace TodoApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
+            await signInManager.SignOutAsync();
+
             return View();
         }
     }

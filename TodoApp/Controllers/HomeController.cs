@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TodoApp.Models;
 
@@ -15,9 +16,18 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        // проверка авторизации пользователя
+        if (User.Identity.IsAuthenticated)
+        {
+            var userName = User.Identity.Name;
+
+            return View("Index", userName);
+        }
+
         return View();
     }
 
+    [Authorize]
     public IActionResult Privacy()
     {
         return View();
