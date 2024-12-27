@@ -16,10 +16,10 @@ public class AppIdentityDbContext : IdentityDbContext
         base.OnModelCreating(builder);
 
         // Убираем таблицы
-        builder.Ignore<IdentityRole>();
-        builder.Ignore<IdentityUserRole<string>>();
+        //builder.Ignore<IdentityRole>();
+        //builder.Ignore<IdentityUserRole<string>>();
         //builder.Ignore<IdentityUserClaim<string>>();
-        builder.Ignore<IdentityRoleClaim<string>>();
+        //builder.Ignore<IdentityRoleClaim<string>>();
         builder.Ignore<IdentityUserLogin<string>>();
         builder.Ignore<IdentityUserToken<string>>();
     }

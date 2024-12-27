@@ -46,6 +46,9 @@ namespace TodoApp.Controllers
 
                 if (result.Succeeded)
                 {
+                    // добавляем роль для пользователя
+                    await userManager.AddToRoleAsync(identityUser, "customer");
+
                     return RedirectToAction("Login");
                 }
 

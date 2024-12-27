@@ -1,0 +1,36 @@
+﻿@model IEnumerable<TodoApp.Models.ViewModels.UserWithRolesViewModel>
+
+<h1>All users</h1>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach(var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.Roles</td>
+                <td>
+                    <form method="get" action="/Users/Edit">
+                        <input name="id" value="@user.UserId" hidden/>
+                        <input type="submit" value="Edit"/>
+                    </form>
+
+                    <form asp-action="Delete" method="post">
+                         <input name="id" value="@user.UserId" hidden/>
+                         <input type="submit" value="Delete"/>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

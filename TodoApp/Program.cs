@@ -11,27 +11,53 @@ builder.Services.AddControllersWithViews();
  builder.Services.AddDbContext<AppIdentityDbContext>(options => 
      options.UseSqlite(builder.Configuration.GetConnectionString("MyDatabase")));
 
-// 
-builder.Services.AddSingleton(TimeProvider.System);
+// builder.Services.AddSingleton(TimeProvider.System);
 
 // сервис для CoreIdentity
-builder.Services.AddIdentityCore<IdentityUser>().
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().
     AddEntityFrameworkStores<AppIdentityDbContext>().
-    AddSignInManager();   // для входа в систему
+    AddDefaultTokenProviders();   // для генерации токенов
 
-builder.Services.AddAuthentication(options =>
+// добавление ролей
+async Task SeedRolesAndAdminUser(IServiceProvider serviceProvider)
 {
-    options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-}).AddCookie(IdentityConstants.ApplicationScheme, options =>
-{
-    options.LoginPath = "/Account/Login";
-    options.LogoutPath = "/Account/Logout";
-    options.ExpireTimeSpan = TimeSpan.FromDays(14);
-});
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+    if(!await roleManager.RoleExistsAsync("admin"))
+    {
+        await roleManager.CreateAsync(new IdentityRole("admin"));
+    }
+
+    if(!await roleManager.RoleExistsAsync("customer"))
+    {
+        await roleManager.CreateAsync(new IdentityRole("customer"));
+    }
+
+    // создание админ юзера
+    var adminEmail = "admin@todo.net";
+    var adminPassword = "Admin@123";
+    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+    if (adminUser == null)
+    {
+        var user = new IdentityUser() {UserName = adminEmail, Email = adminEmail};
+        var result = await userManager.CreateAsync(user, adminPassword);
+
+        if (result.Succeeded)
+        {
+            await userManager.AddToRoleAsync(user, "admin");
+        }
+    }
+}
 
 var app = builder.Build();
+
+using(var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedRolesAndAdminUser(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

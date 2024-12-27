@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TodoApp.Models.ViewModels;
 
 namespace TodoApp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UsersController : Controller
     {
         private UserManager<IdentityUser> userManager;
@@ -21,12 +23,45 @@ namespace TodoApp.Controllers
             return View(users);
         }
 
+        public async Task<IActionResult> AllUsers()
+        {
+            var users = userManager.Users.ToList();
+
+            var usersForView = new List<UserWithRolesViewModel>();
+
+            foreach(var user in users)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+
+                usersForView.Add(new UserWithRolesViewModel()
+                {
+                    UserId = user.Id,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Roles = string.Join(", ", roles)
+                });
+            }
+
+            return View(usersForView);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             //IdentityUser identityUser = userManager.Users.FirstOrDefault(u => u.Id == id);
 
             IdentityUser identityUser = await userManager.FindByIdAsync(id);
+
+            // проверка админ или нет
+            bool isAdmin = await userManager.IsInRoleAsync(identityUser, "admin");
+
+            // если мы = админ когда авторизованы
+            // проверка пользователя который только что открыл метод Delete
+            if (User.IsInRole("admin"))
+            {
+                
+            }
+
 
             if (identityUser != null)
             {
@@ -43,12 +78,15 @@ namespace TodoApp.Controllers
 
             if (identityUser != null)
             {
+
                 EditUserViewModel viewModel = new EditUserViewModel()
                 {
                     Id = identityUser.Id,
                     Email = identityUser.Email,
                     UserName = identityUser.UserName
                 };
+
+
 
                 return View(viewModel);
             }
@@ -65,6 +103,18 @@ namespace TodoApp.Controllers
             identityUser.UserName = userViewModel.UserName;
 
             await userManager.UpdateAsync(identityUser);
+
+            // работа с паролем
+            if (!string.IsNullOrEmpty(userViewModel.NewPassword))
+            {
+                var token = await userManager.GeneratePasswordResetTokenAsync(identityUser);
+                var passwordResult = await userManager.ResetPasswordAsync(identityUser, token, userViewModel.NewPassword);
+
+                if (!passwordResult.Succeeded)
+                {
+                    // ModelState изменение
+                }
+            }
 
             return RedirectToAction("Index");
         }
