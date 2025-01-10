@@ -1,0 +1,118 @@
+﻿<div>
+    Magic Index
+</div>
+
+<div>
+    <button onclick="myFunction()">Нажми меня</button>
+</div>
+<div>
+    <a href="#" onclick="myFunctio()">Тыкни тут</a>
+</div>
+<div>
+    <button onclick="askUser()">Continue</button>
+</div>
+
+<div>
+    <button onclick="askName()">Input Name</button>
+</div>
+
+<div>
+    <p id="mySmile">:)</p>
+    <a onclick="changeSmile()">Change Smile</a>
+</div>
+
+<div id="secretBox" style="border: 1px solid; padding: 5px; display: none;">
+    Секретное сообщение! Пароль от всех дверей: 7632
+</div>
+
+<button onclick="toggleSecret()">Показать / Скрыть</button>
+
+<div>
+    <button onclick="changeBgColor('red')">Фон: красный</button>
+    <button onclick="changeBgColor('green')">Фон: зеленый</button>
+</div>
+
+<div>
+    <button onclick="callServer()">CallServer</button>
+</div>
+
+<div>
+    <p>Поиск квадрата числа</p>
+    <input id="number" type="text"/>
+    <button onclick="findSquare()">Вычислить квадрат числа</button>
+</div>
+
+<script>
+
+    function findSquare() {
+        let input = document.getElementById("number");
+
+        const userNumber = input.value;
+
+        fetch(`/Magic/Square?number=${userNumber}`).   // отправить get запрос на сервер
+        then(response => response.text()). // получаем ответ как текст
+        then(data => {
+            alert("Ответ от сервера: " + data);
+        })
+        .catch(error => {
+            console.log("Ошибка при запросе: ", error);
+        });
+    }
+
+    function callServer() {
+        fetch('/Magic/Hello?message=hello').   // отправить get запрос на сервер
+        then(response => response.text()). // получаем ответ как текст
+        then(data => {
+            alert("Ответ от сервера: " + data);
+        }).
+        catch(error => {
+            console.log("Ошибка при запросе: ", error);
+        });
+    }
+
+    function changeBgColor(color) {
+        document.body.style.backgroundColor = color;
+    }
+
+    function toggleSecret() {
+        let secretBox = document.getElementById('secretBox');
+
+        if(secretBox.style.display === 'none') {
+            secretBox.style.display = 'block';
+        } else {
+            secretBox.style.display = 'none';
+        }
+    }
+
+    function changeSmile() {
+        let p = document.getElementById("mySmile");
+        p.innerHTML = ":(";
+    }
+
+    function askName() {
+        let name = prompt("Как тебя зовут?", "Иван");
+
+        console.log("Name: ", name);
+    }
+
+    function askUser() {
+        let answer = confirm("Хочешь продолжить?");
+        console.log(`answer: ${answer}`);
+
+        if (answer) {
+            console.log("Ты продолжаешь! Ок!");
+        } else {
+            console.log("Ты отменил операцию!");
+        }
+    }
+
+    function myFunction() {
+        alert("Hello!");
+    }
+
+    // Дожидаемся полной загрузки окна
+    window.addEventListener('load', function () {
+        //# alert("Loaded!");
+        console.log("Loaded!");
+    });
+</script>

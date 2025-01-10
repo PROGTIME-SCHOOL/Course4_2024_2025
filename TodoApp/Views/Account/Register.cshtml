@@ -20,5 +20,12 @@ SecretKey: 6LcRf6IqAAAAAEYEjFP7fYOS89pzv1Le0hkH1Gl0
     <input asp-for="Email"/>
     <input asp-for="Password"/>
     <input asp-for="ConfirmPassword"/>
+
+    <!-- fix2 сделать так чтобы sitekey автоматически подгружался  -->
+    <div class="g-recaptcha" data-sitekey="6LcRf6IqAAAAAASPL5WOehx6sZ2D87fDJTuffGb8"></div>
+
+
     <input type="submit" value="Register"/>
 </form>
+
+ <script src="https://www.google.com/recaptcha/api.js"></script>

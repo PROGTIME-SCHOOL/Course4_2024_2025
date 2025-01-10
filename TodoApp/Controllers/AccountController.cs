@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TodoApp.Models.ViewModels;
+using TodoApp.Services;
 
 namespace TodoApp.Controllers
 {
@@ -27,14 +28,27 @@ namespace TodoApp.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            // ?
+            
+
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel viewModel)
+        public async Task<IActionResult> Register(RegisterViewModel viewModel,
+            [FromServices] RecaptchaService recaptchaService)
         {
             if (ModelState.IsValid)
             {
+                // проверка на робота
+                var recaptchaToken = Request.Form["g-recaptcha-response"];
+                var isRecaptchaValid = await recaptchaService.VerifyAsync(recaptchaToken);
+                if (!isRecaptchaValid)
+                {
+                    ModelState.AddModelError("", "CAPTCHA error! Try again!");
+                    return View(viewModel);
+                }
+
                 IdentityUser identityUser = new IdentityUser()
                 {
                     UserName = viewModel.Email,

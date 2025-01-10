@@ -1,8 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Data;
+using TodoApp.Models;
+using TodoApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<RecaptchaSettings>(builder.Configuration.GetSection("RecaptchaSettings"));
+builder.Services.AddScoped<RecaptchaService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
